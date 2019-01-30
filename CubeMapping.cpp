@@ -271,21 +271,21 @@ bool CubeMapping::Activate(void) {
 	// shaders //
 	//---------//
 	
-	quadVertShaderName = pathName + std::string("/resources/quad.vert");
-	quadFragShaderName = pathName + std::string("/resources/quad.frag");
-	skyboxVertShaderName = pathName + std::string("/resources/skybox.vert");
-	skyboxGeomShaderName = pathName + std::string("/resources/skybox.geom");
-	skyboxFragShaderName = pathName + std::string("/resources/skybox.frag");
-	cubeVertShaderName =  pathName + std::string("/resources/cube.vert");
-	cubeGeomShaderName =  pathName + std::string("/resources/cube.geom");
-	cubeFragShaderName =  pathName + std::string("/resources/cube.frag");
-	mirrorcubeGeomShaderName =  pathName + std::string("/resources/mirrorcube.geom");
-	mirrorcubeFragShaderName =  pathName + std::string("/resources/mirrorcube.frag");
-	boxVertShaderName = pathName + std::string("/resources/box.vert");
-	boxFragShaderName = pathName + std::string("/resources/box.frag");
-	layers2cubeVertShaderName = pathName + std::string("/resources/layers2cubemap.vert");
-	layers2cubeGeomShaderName = pathName + std::string("/resources/layers2cubemap.geom");
-	layers2cubeFragShaderName = pathName + std::string("/resources/layers2cubemap.frag");
+	quadVertShaderName = pathName + std::string("/resources/quad.vert.glsl");
+	quadFragShaderName = pathName + std::string("/resources/quad.frag.glsl");
+	skyboxVertShaderName = pathName + std::string("/resources/skybox.vert.glsl");
+	skyboxGeomShaderName = pathName + std::string("/resources/skybox.geom.glsl");
+	skyboxFragShaderName = pathName + std::string("/resources/skybox.frag.glsl");
+	cubeVertShaderName =  pathName + std::string("/resources/cube.vert.glsl");
+	cubeGeomShaderName =  pathName + std::string("/resources/cube.geom.glsl");
+	cubeFragShaderName =  pathName + std::string("/resources/cube.frag.glsl");
+	mirrorcubeGeomShaderName =  pathName + std::string("/resources/mirrorcube.geom.glsl");
+	mirrorcubeFragShaderName =  pathName + std::string("/resources/mirrorcube.frag.glsl");
+	boxVertShaderName = pathName + std::string("/resources/box.vert.glsl");
+	boxFragShaderName = pathName + std::string("/resources/box.frag.glsl");
+	layers2cubeVertShaderName = pathName + std::string("/resources/layers2cubemap.vert.glsl");
+	layers2cubeGeomShaderName = pathName + std::string("/resources/layers2cubemap.geom.glsl");
+	layers2cubeFragShaderName = pathName + std::string("/resources/layers2cubemap.frag.glsl");
 	createShaders();
 
 	//----------//
@@ -762,7 +762,11 @@ bool CubeMapping::Deactivate(void) {
  */
 void setRenderTargets(GLuint fbo, uint numBuffers, const GLenum* buffers, int vWidth, int vHeight){
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-	glDrawBuffers(numBuffers, buffers);
+	if(numBuffers > 1){
+		glDrawBuffers(numBuffers, buffers);
+	}else{
+		glDrawBuffer(buffers[0]);
+	}
 	glViewport(0,0,vWidth, vHeight);
 }
 

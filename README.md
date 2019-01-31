@@ -33,7 +33,22 @@ This shell script is also executed when running from within QT Creator.
 In Windows, when running from within VS OGL4Core is started and the plugin booted up as well.
 In general the OGL4Core executable can be started and the plugin selected from within the application.
 
-### Usage with Mesa 3D
+### Running with Mesa 3D
 When your system's OpenGL implementation is Mesa (as most likely with an AMD card in Ubuntu) you need to start the OGL4Core application with a [GL version override](https://www.mesa3d.org/envvars.html) in order to setup the GL API type to be compatible with the GL version that is required by the OGL4Core and the plugin itself.
 I noticed this when starting OGL4Core the first time and it reported my system to only support Open GL 3.0 while it actually supported 4.5.
 The shell script already starts the application with `MESA_GL_VERSION_OVERRIDE=3.3FC` which is Open GL version 3.3 with forward compatibility profile.
+
+## Controls
+* You can rotate the camera by dragging with the left mouse button over the image.
+* You can go back and forth with the camera by dragging vertically with the right mouse button. 
+* Camera movement can also be done by using the controls in the Parameters control panel in the Manipulators section.
+* The cameras field of view (`FoVy`) as well as its near and far plane distance (`zNear` `zFar`) can be set in the control panel.
+* The skybox texturing can be changed in the control panel allowing for 4 different surroundings.
+* The cube face geometry of the objects can be refined by increasing the sub division level value (`subDivLvl`). This is useful when cube to sphere projection is active so that the sphere looks smooth.
+* The `prllxCorr` parameter controls the parallax correction factor used for calculating the reflection. Due to the way reflection is handled in this approach it may not look natural, which is why this parameter was introduced to correct for the parallax phenomenon (especially when in cube shape).
+* Typing the `S`-key will switch the mouse interaction from camera control to object movement. In this mode new parameters pop up in the control panel. Typing it again will switch back to camera control.
+  * Clicking on an object using the left mouse button will select it, and show its properties in the control panel.
+  * Its position can be changed by either altering the parameters in the control panel or by dragging the mouse with the right mouse button (left-right, up-down) or middle mouse button (back and forth in depth).
+  * The cube can be made into a sphere when checking the `sphere` box in the control panel.
+  * When checking the `texture` box in the control panel, the object will be use a cubemap texture instead of the checkerboard pattern (for one of the cubes it means that it will turn reflecting and show its surroundings).
+  * The `warpFN` drop down lets you select the warping function used for the texture coordinates (This will be best visible with the checkerboard pattern).

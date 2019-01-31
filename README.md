@@ -33,5 +33,6 @@ In Windows, when running from within VS OGL4Core is started and the plugin boote
 In general the OGL4Core executable can be started and the plugin selected from within the application.
 
 ### Usage with Mesa 3D
-When your system's OpenGL implementation is Mesa (as most likely with an AMD card in Ubuntu) you need to start the OGL4Core application with a [GL version override](https://www.mesa3d.org/envvars.html) in order to setup the GL API type to be compatible with the GL version that is required by the OGL4Core and the plugin itself. 
+When your system's OpenGL implementation is Mesa (as most likely with an AMD card in Ubuntu) you need to start the OGL4Core application with a [GL version override](https://www.mesa3d.org/envvars.html) in order to setup the GL API type to be compatible with the GL version that is required by the OGL4Core and the plugin itself.
+I noticed this when starting OGL4Core the first time and it reported my system to only support Open GL 3.0 while it actually supported 4.5.
 The shell script already starts the application with `MESA_GL_VERSION_OVERRIDE=3.3FC` which is Open GL version 3.3 with forward compatibility profile.

@@ -16,7 +16,7 @@ This in turn utilizes [geometry shader instancing](https://www.khronos.org/openg
 
 ## Installation
 1. In order to run it you need to download the OGL4Core framework here <https://www.vis.uni-stuttgart.de/projekte/ogl4core-framework>. 
-There are versions for differenmt Linux distributions as well as Windows, you need to download a version with sources (src) in order to compile this plugin.
+There are versions for different Linux distributions as well as Windows, you need to download a version with sources (src) in order to compile this plugin.
 2. Unpack the downloaded archive to a location of your choice.
 3. In the root directory of the OGL4Core framework you'll find a directory named `Plugins`. Within that directory, clone this repository. 
 E.g. `~/OGL4Core$ cd Plugins/` and then `~/OGL4Core/Plugins$ git clone https://github.com/hageldave/OGL4Core-CubeMapping.git`
@@ -28,7 +28,7 @@ E.g. `~/OGL4Core/Plugins$ cd OGL4Core-CubeMapping/` and then `~/OGL4Core/Plugins
 
 ## Running the Application & Plugin
 Since the plugin uses GS instancing your graphics hardware has to support the `GL_ARB_gpu_shader5` extension which is available on hardware that is capable of OpenGL 4.0.
-For Linux there is a shell script included that starts OGL4Core and boots up the plugin right away (`start_ogl4core.sh`).
+For Linux there is a shell script included which can be used to start OGL4Core and boot up the plugin right away (`./start_ogl4core.sh -r CubeMapping`).
 This shell script is also executed when running from within QT Creator.
 In Windows, when running from within VS OGL4Core is started and the plugin booted up as well.
 In general the OGL4Core executable can be started and the plugin selected from within the application.

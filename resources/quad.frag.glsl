@@ -14,11 +14,11 @@ in vec2 texCoords;
  * images rendered from each of the cubefaces of the reflecting object.
  */
 void main() {
-   if(useTexture != 0){
-      vec4 texColor = texture(tex, vec3(texCoords,0));
-      frag_color = texColor;
-   } else {
-      frag_color = vec4(texCoords,0,1);
-   }
+	if(useTexture != 0){
+		vec4 texColor = texture(tex, vec3(texCoords,0));
+		frag_color = texColor;
+	} else {
+		frag_color = vec4(texCoords,0,1);
+	}
 }
 

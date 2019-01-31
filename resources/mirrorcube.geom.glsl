@@ -26,70 +26,91 @@ out vec3 normal;
 
 in uint permMXidx_[];
 
+/* Permutation matrices for transforming a 2D cube face vertex to its actual 3D position of the cube.
+ * Each matrix transforms to another face of the cube. 
+ */
 const mat3 permMatrices[6] = mat3[6](
-            mat3( 1,0,0,   0,1,0,    0,  0, .5 ), // front
-            mat3(-1,0,0,   0,1,0,    0,  0,-.5 ), // back
-            mat3( 0,0,-1,  0,1,0,   .5,  0,  0 ), // left
-            mat3( 0,0,1,   0,1,0,  -.5,  0,  0 ), // right
-            mat3( 1,0,0,   0,0,-1,   0, .5,  0 ), // top
-            mat3( 1,0,0,   0,0,1,    0,-.5,  0 )  // bottom
-            );
-            
+			mat3( 1,0,0,   0,1,0,    0,  0, .5 ), // front
+			mat3(-1,0,0,   0,1,0,    0,  0,-.5 ), // back
+			mat3( 0,0,-1,  0,1,0,   .5,  0,  0 ), // left
+			mat3( 0,0,1,   0,1,0,  -.5,  0,  0 ), // right
+			mat3( 1,0,0,   0,0,-1,   0, .5,  0 ), // top
+			mat3( 1,0,0,   0,0,1,    0,-.5,  0 )  // bottom
+			);
+			
 mat3 permMX;
 
-
+/* Creates a vertex ready to be emmited from the specified 2D position, 
+ * the specified viewprojection matrix and the currently set permutation matrix.
+ */
 void makeVertex(vec2 facePos, mat4 vpMX) {
-    vec3 pos = permMX*vec3(facePos,1);
-    faceCoords = facePos;
-    if(doSphereProjection){
-        normal = normalize(pos);
-        worldCoords = (modelMX * vec4(normal*0.69,1)).xyz;
-    } else {
-        normal = permMX*vec3(0,0,1);
-        worldCoords = (modelMX * vec4(pos,1)).xyz;
-    }
-    gl_Position = vpMX * vec4(worldCoords,1);
-    gl_Layer = 0;
-    permMXidx = permMXidx_[0];
+	// transform to 3D cube position
+	vec3 pos = permMX*vec3(facePos,1);
+	faceCoords = facePos;
+	if(doSphereProjection){
+		normal = normalize(pos);
+		worldCoords = (modelMX * vec4(normal*0.69,1)).xyz;
+	} else {
+		normal = permMX*vec3(0,0,1);
+		worldCoords = (modelMX * vec4(pos,1)).xyz;
+	}
+	gl_Position = vpMX * vec4(worldCoords,1);
+	gl_Layer = 0;
+	permMXidx = permMXidx_[0];
 }
 
+/* Geometry shader for rendering a cube or sphere in the scene.
+ * This is similar to cube.geom.glsl but without instancing
+ * since there is no need for a layered rendering.
+ * This shader is intended for drawing the reflecting object.
+ * 
+ * Also this GS introduces new vertices to refine the geometry of the
+ * quads defined by the inputs. The input position defines the 2D coordinate
+ * of the bottom left corner of the current quad and the uniform totalQuadSize
+ * determines the width and height of the quad originating from that point.
+ * The quad spanned by this parameters will be covered with columns of
+ * triangle strips to equally sample the area.
+ * The uniform subDivisionLevel determines how many triangle strip columns
+ * are created and how many "small" quads a trianglestrip contains.
+ */
 void main() {
-    vec3 pos = vec3(0);
-    vec2 facePos = vec2(0);
-    permMX = permMatrices[permMXidx_[0]];
+	// set the permutation matrix corresponding to the current input's permutation matrix index
+	permMX = permMatrices[permMXidx_[0]];
 
-    mat4 vpMX = projMX*viewMX;
+	mat4 vpMX = projMX*viewMX;
 
-    float subQuadSize = totalQuadSize/subDivisionLevel;
-    for(int ix = 0; ix < subDivisionLevel; ix++){
-        float x0 = ix*subQuadSize + gl_in[0].gl_Position.x;
-        float x1 = x0+subQuadSize;
-        float y0 = 0*subQuadSize + gl_in[0].gl_Position.y;
-        float y1 = y0+subQuadSize;
-        // bottom left
-        makeVertex(vec2(x0,y0), vpMX);
-        EmitVertex();
-        // bottom_right
-        makeVertex(vec2(x1,y0), vpMX);
-        EmitVertex();
-        // top_left
-        makeVertex(vec2(x0,y1), vpMX);
-        EmitVertex();
-        // top_right
-        makeVertex(vec2(x1,y1), vpMX);
-        EmitVertex();
-        for(int iy = 1; iy < subDivisionLevel; iy++){
-            y0 = iy*subQuadSize + gl_in[0].gl_Position.y;
-            y1 = y0+subQuadSize;
-            // top_left
-            makeVertex(vec2(x0,y1), vpMX);
-            EmitVertex();
-            // top_right
-            makeVertex(vec2(x1,y1), vpMX);
-            EmitVertex();
-
-        }
-        EndPrimitive();
-    }
+	// create the triangle strip
+	float subQuadSize = totalQuadSize/subDivisionLevel;
+	for(int ix = 0; ix < subDivisionLevel; ix++){
+		// define the coords of the first quad
+		float x0 = ix*subQuadSize + gl_in[0].gl_Position.x;
+		float x1 = x0+subQuadSize;
+		float y0 = 0*subQuadSize + gl_in[0].gl_Position.y;
+		float y1 = y0+subQuadSize;
+		// bottom left
+		makeVertex(vec2(x0,y0), vpMX);
+		EmitVertex();
+		// bottom_right
+		makeVertex(vec2(x1,y0), vpMX);
+		EmitVertex();
+		// top_left
+		makeVertex(vec2(x0,y1), vpMX);
+		EmitVertex();
+		// top_right
+		makeVertex(vec2(x1,y1), vpMX);
+		EmitVertex();
+		// append more vertices to form a strip
+		for(int iy = 1; iy < subDivisionLevel; iy++){
+			y0 = iy*subQuadSize + gl_in[0].gl_Position.y;
+			y1 = y0+subQuadSize;
+			// top_left
+			makeVertex(vec2(x0,y1), vpMX);
+			EmitVertex();
+			// top_right
+			makeVertex(vec2(x1,y1), vpMX);
+			EmitVertex();
+		}
+		EndPrimitive();
+	}
 
 }

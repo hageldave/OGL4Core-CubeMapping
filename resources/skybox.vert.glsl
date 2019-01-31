@@ -14,10 +14,12 @@ out vec3 texCoords_;
  * (multiplication with permutation matrix)
  */
 vec3 get3DPos() {
-    vec3 coord = vec3(in_position,1);
-    return vec3( dot(pmRowX,coord),
-                 dot(pmRowY,coord),
-                 dot(pmRowZ,coord));
+	vec3 coord = vec3(in_position,1);
+	return vec3( 
+		dot(pmRowX,coord),
+		dot(pmRowY,coord),
+		dot(pmRowZ,coord)
+	);
 }
 
 /* vertex shader for drawing a cube for a skybox.
@@ -26,8 +28,8 @@ vec3 get3DPos() {
  * the corresponding permutation matrix (split up into row vectors as input).
  */
 void main() {
-    vec3 pos = get3DPos();
-    gl_Position = modelMX * vec4(pos,1);
-    faceCoords_ = in_position+vec2(.5,.5);
-    texCoords_ = pos;
+	vec3 pos = get3DPos();
+	gl_Position = modelMX * vec4(pos,1);
+	faceCoords_ = in_position+vec2(.5,.5);
+	texCoords_ = pos;
 }

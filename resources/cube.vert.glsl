@@ -9,6 +9,6 @@ out uint permMXidx_;
  * This simply forwards the inputs to the geometry shader.
  */
 void main() {
-    gl_Position = vec4(cornerVert,0,0);
-    permMXidx_ = permMXidx;
+	gl_Position = vec4(cornerVert,0,0);
+	permMXidx_ = permMXidx;
 }

@@ -10,7 +10,7 @@ out vec2 texCoords_;
  * contents of a 2D texture array to a cubemap FBO.
  */
 void main() {
-    gl_Position = projMX * vec4(in_position,0,1);
-    texCoords_ = in_position;
+	gl_Position = projMX * vec4(in_position,0,1);
+	texCoords_ = in_position;
 }
 

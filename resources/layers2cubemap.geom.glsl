@@ -15,13 +15,13 @@ flat out uint texLayer;
  * (first layer does not correspond to the cubemap)
  */
 void main() {
-    for(int i = 0; i < 3; i++){
-        gl_Position = gl_in[i].gl_Position;
-        gl_Layer = gl_InvocationID;
-        texLayer = gl_InvocationID+1; // starting at second layer of tex array
-        texCoords = texCoords_[i];
-        EmitVertex();
-    }
-    EndPrimitive();
+	for(int i = 0; i < 3; i++){
+		gl_Position = gl_in[i].gl_Position;
+		gl_Layer = gl_InvocationID;
+		texLayer = gl_InvocationID+1; // starting at second layer of tex array
+		texCoords = texCoords_[i];
+		EmitVertex();
+	}
+	EndPrimitive();
 }
 

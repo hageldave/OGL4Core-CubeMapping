@@ -10,7 +10,7 @@ out vec2 texCoords;
  * displays rendered testure from FBO
  */
 void main() {
-    gl_Position = projMX * vec4(in_position,0,1);
-    texCoords = in_position;
+	gl_Position = projMX * vec4(in_position,0,1);
+	texCoords = in_position;
 }
 

@@ -11,5 +11,5 @@ uniform mat4 projMX;
  * the right front top vertex of the inputs is at (1,1,1)
  */
 void main() {
-    gl_Position = projMX * viewMX * modelMX * (in_position-vec4(0.5,0.5,0.5,0));
+	gl_Position = projMX * viewMX * modelMX * (in_position-vec4(0.5,0.5,0.5,0));
 }

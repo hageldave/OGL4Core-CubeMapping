@@ -1,5 +1,6 @@
 # OGL4Core-CubeMapping
-A demo of cube mapping applications in OpenGL realised as a Plugin to the OGL4Core Framework. 
+A demo of cube mapping applications in OpenGL realised as a Plugin to the OGL4Core Framework.
+This was developed as a self assigned task for the _Practical Course Visual Computing_, which is targeted at master students majoring in computer science.
 
 OGL4Core is developed by the [Institute for Visualization & Interactive Systems](https://www.vis.uni-stuttgart.de) of the University of Stuttgart and intended to provide an environment for prototypical or educational OpenGL centric applications.
 This plugin revolves around the topic of [cube mapping](https://en.wikipedia.org/wiki/Cube_mapping) and shows an interactive scene populated by 3 movable cubes (or spheres) covered by a skybox.
